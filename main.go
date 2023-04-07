@@ -6,89 +6,92 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"os"
+	"os/exec"
+	"runtime"
 	"time"
 )
 
 type Candidato struct {
-	Seq string `json:"seq"`
+	Seq    string `json:"seq"`
 	Sqcand string `json:"sqcand"`
-	N string `json:"n"`
-	Nm string `json:"nm"`
-	Cc string `json:"cc"`
-	Nv string `json:"nv"`
-	E string `json:"e"`
-	St string `json:"st"`
-	Dvt string `json:"dvt"`
-	Vap string `json:"vap"`
-	Pvap string `json:"pvap"`
+	N      string `json:"n"`
+	Nm     string `json:"nm"`
+	Cc     string `json:"cc"`
+	Nv     string `json:"nv"`
+	E      string `json:"e"`
+	St     string `json:"st"`
+	Dvt    string `json:"dvt"`
+	Vap    string `json:"vap"`
+	Pvap   string `json:"pvap"`
 }
 
 type Eleicoes struct {
-	Ele string `json:"ele"`
-	Tpabr string `json:"tpabr"`
-	Cdabr string `json:"cdabr"`
-	Carper string `json:"carper"`
-	Md string `json:"md"`
-	T string `json:"t"`
-	F string `json:"f"`
-	Dg string `json:"dg"`
-	Hg string `json:"hg"`
-	Dt string `json:"dt"`
-	Ht string `json:"ht"`
-	Dv string `json:"dv"`
-	Tf string `json:"tf"`
-	V string `json:"v"`
-	Esae string `json:"esae"`
-	Mnae string `json:"mnae"`
-	S string `json:"s"`
-	St string `json:"st"`
-	Pst string `json:"pst"`
-	Snt string `json:"snt"`
-	Psnt string `json:"psnt"`
-	Si string `json:"si"`
-	Psi string `json:"psi"`
-	Sni string `json:"sni"`
-	Psni string `json:"psni"`
-	Sa string `json:"sa"`
-	Psa string `json:"psa"`
-	Sna string `json:"sna"`
-	Psna string `json:"psna"`
-	E string `json:"e"`
-	Ea string `json:"ea"`
-	Pea string `json:"pea"`
-	Ena string `json:"ena"`
-	Pena string `json:"pena"`
-	Esi string `json:"esi"`
-	Pesi string `json:"pesi"`
-	Esni string `json:"esni"`
-	Pesni string `json:"pesni"`
-	C string `json:"c"`
-	Pc string `json:"pc"`
-	A string `json:"a"`
-	Pa string `json:"pa"`
-	Vscv string `json:"vscv"`
-	Vnom string `json:"vnom"`
-	Pvnom string `json:"pvnom"`
-	Vvc string `json:"vvc"`
-	Pvvc string `json:"pvvc"`
-	Vb string `json:"vb"`
-	Pvb string `json:"pvb"`
-	Tvn string `json:"tvn"`
-	Ptvn string `json:"ptvn"`
-	Vn string `json:"vn"`
-	Pvn string `json:"pvn"`
-	Vnt string `json:"vnt"`
-	Pvnt string `json:"pvnt"`
-	Vp string `json:"vp"`
-	Pvp string `json:"pvp"`
-	Vv string `json:"vv"`
-	Pvv string `json:"pvv"`
-	Van string `json:"van"`
-	Pvan string `json:"pvan"`
-	Vansj string `json:"vansj"`
-	Pvansj string `json:"pvansj"`
-	Tv string `json:"tv"`
-	Cand []Candidato `json:"cand"`
+	Ele    string      `json:"ele"`
+	Tpabr  string      `json:"tpabr"`
+	Cdabr  string      `json:"cdabr"`
+	Carper string      `json:"carper"`
+	Md     string      `json:"md"`
+	T      string      `json:"t"`
+	F      string      `json:"f"`
+	Dg     string      `json:"dg"`
+	Hg     string      `json:"hg"`
+	Dt     string      `json:"dt"`
+	Ht     string      `json:"ht"`
+	Dv     string      `json:"dv"`
+	Tf     string      `json:"tf"`
+	V      string      `json:"v"`
+	Esae   string      `json:"esae"`
+	Mnae   string      `json:"mnae"`
+	S      string      `json:"s"`
+	St     string      `json:"st"`
+	Pst    string      `json:"pst"`
+	Snt    string      `json:"snt"`
+	Psnt   string      `json:"psnt"`
+	Si     string      `json:"si"`
+	Psi    string      `json:"psi"`
+	Sni    string      `json:"sni"`
+	Psni   string      `json:"psni"`
+	Sa     string      `json:"sa"`
+	Psa    string      `json:"psa"`
+	Sna    string      `json:"sna"`
+	Psna   string      `json:"psna"`
+	E      string      `json:"e"`
+	Ea     string      `json:"ea"`
+	Pea    string      `json:"pea"`
+	Ena    string      `json:"ena"`
+	Pena   string      `json:"pena"`
+	Esi    string      `json:"esi"`
+	Pesi   string      `json:"pesi"`
+	Esni   string      `json:"esni"`
+	Pesni  string      `json:"pesni"`
+	C      string      `json:"c"`
+	Pc     string      `json:"pc"`
+	A      string      `json:"a"`
+	Pa     string      `json:"pa"`
+	Vscv   string      `json:"vscv"`
+	Vnom   string      `json:"vnom"`
+	Pvnom  string      `json:"pvnom"`
+	Vvc    string      `json:"vvc"`
+	Pvvc   string      `json:"pvvc"`
+	Vb     string      `json:"vb"`
+	Pvb    string      `json:"pvb"`
+	Tvn    string      `json:"tvn"`
+	Ptvn   string      `json:"ptvn"`
+	Vn     string      `json:"vn"`
+	Pvn    string      `json:"pvn"`
+	Vnt    string      `json:"vnt"`
+	Pvnt   string      `json:"pvnt"`
+	Vp     string      `json:"vp"`
+	Pvp    string      `json:"pvp"`
+	Vv     string      `json:"vv"`
+	Pvv    string      `json:"pvv"`
+	Van    string      `json:"van"`
+	Pvan   string      `json:"pvan"`
+	Vansj  string      `json:"vansj"`
+	Pvansj string      `json:"pvansj"`
+	Tv     string      `json:"tv"`
+	Cand   []Candidato `json:"cand"`
 }
 
 func main() {
@@ -97,13 +100,46 @@ func main() {
 	printEleicao(body, 1)
 
 	url = "https://resultados.tse.jus.br/oficial/ele2022/545/dados-simplificados/br/br-c0001-e000545-r.json"
-	body = getBody(url)
-	printEleicao(body, 2)
+
+	complete_apuracy := false
+	start_apuracy := time.Now()
+
+	for !complete_apuracy {
+		body = getBody(url)
+		complete_apuracy = printEleicao(body, 2)
+
+		time.Sleep(120 * time.Second)
+		// CallClear() //? with show only last apuracy
+	}
+	log.Printf("Tempo de apuração: %s", time.Since(start_apuracy) )
+}
+
+var clear map[string]func() //create a map for storing clear funcs
+
+func init() {
+    clear = make(map[string]func()) //Initialize it
+    clear["linux"] = func() {
+        cmd := exec.Command("clear") //Linux example, its tested
+        cmd.Stdout = os.Stdout
+        cmd.Run()
+    }
+    clear["windows"] = func() {
+        cmd := exec.Command("cmd", "/c", "cls") //Windows example, its tested
+        cmd.Stdout = os.Stdout
+        cmd.Run()
+    }
+}
+
+func CallClear() {
+    value, ok := clear[runtime.GOOS] //runtime.GOOS -> linux, windows, darwin etc.
+    if ok { //if we defined a clear func for that platform:
+        value()  //we execute it
+    } else { //unsupported platform
+        panic("Your platform is unsupported! I can't clear terminal screen :(")
+    }
 }
 
 func getBody(url string) []byte {
-	// fmt.Println("URL:>", url)
-
 	spaceClient := http.Client{
 		Timeout: time.Second * 2, // Timeout after 2 seconds
 	}
@@ -113,7 +149,7 @@ func getBody(url string) []byte {
 		log.Fatal(err)
 	}
 
-	req.Header.Set("User-Agent", "spacecount-tutorial")
+	req.Header.Set("User-Agent", "consumer-results")
 
 	res, getErr := spaceClient.Do(req)
 	if getErr != nil {
@@ -131,7 +167,7 @@ func getBody(url string) []byte {
 	return body
 }
 
-func printEleicao(body []byte, turno int) {
+func printEleicao(body []byte, turno int) bool {
 	eleicao := Eleicoes{}
 	jsonErr := json.Unmarshal(body, &eleicao)
 	if jsonErr != nil {
@@ -148,5 +184,10 @@ func printEleicao(body []byte, turno int) {
 	for _, cand := range eleicao.Cand {
 		fmt.Printf("\t%-20s %8s %12s%s\n", cand.Nm, cand.Vap, cand.Pvap, "%")
 	}
+	dt := time.Now()
 	fmt.Println()
+	fmt.Println("\tMomento da execução: ", dt.Format(time.RFC822))
+	fmt.Println()
+
+	return eleicao.Tf == "s"
 }
